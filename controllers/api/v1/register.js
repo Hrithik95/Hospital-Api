@@ -6,7 +6,7 @@ module.exports.doctor = async function (req,res){
     try{
         let user = await DoctorReference.create(req.body);
         return res.status(200).json({
-            message : "Docror Id Created"
+            message : "Doctor Id Created"
         });
     }
     catch(err){
