@@ -1,29 +1,59 @@
-const passport=require("passport");
+// const passport = require('passport');
+
+// const DoctorReference = require('../models/DoctorSchema');
+
+// const JwtStrategy = require('passport-jwt').Strategy;
+// //Strategy imported
+
+// const ExtractJwt = require('passport-jwt').ExtractJwt;
+
+// let opt = { 
+//     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), 
+//     secretOrKey: 'EncryptionKey'
+// };
+// //object created to be passed in jwt strategy
+
+// passport.use(new JwtStrategy(opt,function(jwtPayload,done){
+//     DoctorReference.findById(jwtPayload._id,function(error,user){
+//         if(error){
+//             return done(error,false);
+//         }
+//         if(user){
+//             return done(null,user);
+//         }
+//         return done(null,false);
+//     })
+// }));
+// // passport-jwt authentication implemented 
+
+// module.exports = passport;
+
+const passport = require('passport');
+
+const DoctorReference = require('../models/DoctorSchema');
+
 const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt=require('passport-jwt').ExtractJwt;
+//Strategy imported
 
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-const Doctor=require('../models/doctors');
+let opt = { 
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), 
+    secretOrKey: 'EncryptionKey'
+};
+//object created to be passed in jwt strategy
 
-var opts = {
-    jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken,
-    //decrypted code
-    secretOrKey :'hospital'
-}
-//JWT authentication
-passport.use(new JwtStrategy(opts,function(jwtPayLoad,done){
-   // console.log(jwtPayLoad);
-    Doctor.findById(jwtPayLoad._id,function(err,doctor){
-        if(err){console.log('error in finding the doctor from jwt'); return;}
-        if(doctor){
-            console.log(doctor);
-            return done(null,doctor);
-        }else{
-            return done(null,false);
+passport.use(new JwtStrategy(opt,function(jwtPayload,done){
+    DoctorReference.findById(jwtPayload._id,function(error,user){
+        if(error){
+            return done(error,false);
         }
-    });
-    
+        if(user){
+            return done(null,user);
+        }
+        return done(null,false);
+    })
 }));
+// passport-jwt authentication implemented 
 
-
-module.exports=passport;
+module.exports = passport;
